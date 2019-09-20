@@ -7,6 +7,12 @@ jdk:
   - openjdk7
 before_script:
   - echo "MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'" > ~/.mavenrc
-script: mvn clean install -Pextjs,h2_disk,auditing -DrepoToken=$repoToken 
+script:
+  - mvn clean install -Pextjs,h2_disk,auditing -DrepoToken=$repoToken 
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=Gnafu_geostore
 after_success:
   - mvn clean cobertura:cobertura coveralls:report
+
+addons:
+  sonarcloud:
+    organization: "gnafu"
